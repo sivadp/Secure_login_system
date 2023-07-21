@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration page</title>
+    <link rel="stylesheet"href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <link rel="stylesheet"href="./public/registration.css"type='text/css'>
+</head>
+<body onload="generateUsername()">
+    <div class="register">
+        <h1>Register</h1>
+        <form action="/register"method="POST">
+            <label for="username">
+                <i class="fas fa-user"></i>
+            </label>
+            <input type="text"name="username" id="username">
+            <label for="email">
+                <i class="fas fa-envelope"></i>
+            </label>
+            <input type="text" name="email"placeholder="123@gmail.com"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+            <label for="password">
+                <i class="fas fa-lock"></i>
+            </label>
+            <div class="password-container">
+                <input type="password" name="password" placeholder="Siva1234" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                title="Must contain at least one lower-case letter and one-upper case letter and one number, and be at least 8 characters long" required>
+                <span class="show-password" onclick="showPassword()">
+                  <i class="fa fa-eye"></i>
+                </span>
+              </div>
+            <input type="submit" value="signup">
+        </form>
+    </div>
+    <script src="registration.js"></script>
+</body>
+</html>

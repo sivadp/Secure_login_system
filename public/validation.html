@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>enter otp</title>
+ </head>
+  <body>
+        <h1>Enter OTP</h1>
+        <form id="form">
+          <label for="otp">ENTER OTP: </label>
+          <input type="text" name="otp" id="otp"required>
+          <input type="submit" value="Submit" onclick="senddata()">
+        </form>
+        <script>
+          function senddata(){
+            const data = {
+              otp:document.getElementById("otp").value
+            };
+            document.getElementById("form").addEventListener("submit", function(event){
+            event.preventDefault();
+            fetch("/verify-otp", {
+             method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+            })
+            .then(res => res.text())
+            .then(html => {
+              document.write(html);
+            })
+            .catch(error => console.error("Error:", error));
+          }
+          )}
+        </script>
+      </body>
+ </html>

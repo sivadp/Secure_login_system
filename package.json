@@ -1,0 +1,21 @@
+{
+  "name": "signup_and_login",
+  "version": "1.0.0",
+  "description": "",
+  "main": "registration.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.1",
+    "crypto": "^1.0.1",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "nodemailer": "^6.9.1",
+    "uuid": "^9.0.0"
+  }
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>gmail</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <style>
+      .navbar-toggler:focus, .navbar-toggler:active {
+    outline: none;
+    box-shadow: none;
+  }
+  .compose-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 16px;
+    text-decoration: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+.compose-button:hover {
+     background-color: #0062cc;
+  }
+  .navi{
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    font-size: inherit;
+    cursor: pointer;
+  }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Email</a>
+          <button class="navbar-toggler border-0"type="button"data-bs-toggle="collapse"data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"style="width: 1.5rem; height: 1.5rem"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#"><button class="navi"onclick="compose('inbox')">Inbox</button></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#"><button class="navi"onclick="compose('to')">Sent</button></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Drafts</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Spam</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Trash</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div id="email-form"></div>
+            <button
+              type="button"
+              class="btn btn-primary compose-button"
+              data-bs-toggle="modal"
+              data-bs-target="#composeModal"
+            >
+              Compose
+            </button>
+            <!-- Modal -->
+            <div class="modal fade"id="composeModal"tabindex="-1"aria-labelledby="composeModalLabel"aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="composeModalLabel">
+                      Compose Email
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div class="mb-3">
+                        <label for="toInput" class="form-label">To</label>
+                        <input type="email"class="form-control"id="toInput"placeholder="Enter recipient email address"/>
+                      </div>
+                      <div class="mb-3">
+                        <label for="subjectInput" class="form-label">Subject</label>
+                        <input type="text"class="form-control"id="subjectInput"placeholder="Enter email subject"/>
+                      </div>
+                      <div class="mb-3">
+                        <label for="textInput" class="form-label">Message</label>
+                        <textarea class="form-control"id="textInput"rows="5"placeholder="Enter email message"></textarea>
+                      </div>
+                      <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary me-2">Send</button>
+                        <button type="button"class="btn btn-secondary"data-bs-dismiss="modal">Cancel</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="gmail.js"></script>
+
+   <!-- <h1 id="user"></h1>
+    <script>
+        const message = new URLSearchParams(window.location.search).get('name');
+        document.querySelector('#user').innerHTML = "welcome "+message;
+    </script>
+-->
+</body>
+</html>
