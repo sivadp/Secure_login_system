@@ -1,12 +1,12 @@
 const mysql = require("mysql");
 const express = require("express");
-const fs=require("fs");
+const fs = require("fs");
 const app = express();
 const bodyparser = require("body-parser");
 const encoder = bodyparser.urlencoded({ extended: false });
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
-const path=require("path");
+const path = require("path");
 
 app.use("/public", express.static("public"));
 app.use(bodyparser.json());
@@ -34,25 +34,62 @@ let transporter = nodemailer.createTransport({
   },
 });
 
+function generateUsername() {
+  return new Promise((resolve, reject) => {
+    const characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numbers = "0123456789";
+    let username = "";
+    for (let i = 0; i < 5; i++) {
+      username += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    for (let i = 0; i < 3; i++) {
+      username += numbers.charAt(Math.floor(Math.random() * numbers.length));
+    }
+    connection.query(
+      "SELECT username FROM accounts WHERE username = ?;",
+      [username],
+      (err, data) => {
+        if (err) {
+          reject(err);
+        }
+        if (data.length > 0) {
+          // Username already exists, generate a new one and resolve the promise
+          generateUsername()
+            .then((newUsername) => resolve(newUsername))
+            .catch(reject);
+        } else {
+          // Username does not exist, resolve the promise with the generated username
+          resolve(username);
+        }
+      }
+    );
+  });
+}
+
 //open registration page when user browse at /register endpoint
 app.get("/register", (req, res) => {
-  const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const numbers='0123456789'
-    let username = '';
-    for (let i = 0; i < 5; i++) {
-        username += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    for(let i=0;i<3;i++){
-        username +=numbers.charAt(Math.floor(Math.random()*numbers.length))
-    }
-    fs.readFile(path.join(__dirname,"/public/registration.html"),'utf8',(err,data)=>{
-      if(err){
+  let uniqueUsername = '';
+  generateUsername()
+    .then((username) => {
+      uniqueUsername=username
+    })
+    .catch((err) => {
+      console.error("Error generating username:", err);
+    });
+  fs.readFile(
+    path.join(__dirname, "/public/registration.html"),
+    "utf8",
+    (err, data) => {
+      if (err) {
         res.status(500).send("internal server error");
         return;
       }
-      const modifiedHTML=data.replace("{{name}}",username);
+      const modifiedHTML = data.replace("{{name}}", uniqueUsername);
       res.status(200).send(modifiedHTML);
-    })
+    }
+  );
 });
 //sending js file along with html file of registration page
 app.get("/registration.js", (req, res) => {
@@ -69,8 +106,8 @@ let otp = "",
 const key = crypto.randomBytes(32);
 const algorithm = "aes-256-cbc";
 const iv = crypto.randomBytes(16);
-const keyHex = key.toString('hex');
-const ivHex = iv.toString('hex');
+const keyHex = key.toString("hex");
+const ivHex = iv.toString("hex");
 
 //functions to be invoked when user sends registration form data
 app.post("/register", encoder, function (req, res) {
@@ -126,7 +163,7 @@ app.post("/verify-otp", (req, res) => {
     encrypted += cipher.final("hex");
     connection.query(
       "INSERT INTO accounts (username, password, email, key_val, iv_val) VALUES (?, ?, ?, ?, ?);",
-      [username, encrypted, email,keyHex,ivHex],
+      [username, encrypted, email, keyHex, ivHex],
       function (err, results, fields) {
         if (err) {
           throw err;
@@ -158,7 +195,6 @@ app.post("/verify-otp", (req, res) => {
   }
 });
 
-
 //for login
 app.get("/login", function (req, res) {
   res.sendFile(__dirname + "/public/login.html");
@@ -177,11 +213,11 @@ app.post("/login", encoder, function (req, res) {
         if (results.length > 0) {
           let k = results[0].password;
           let username = results[0].username;
-          let keyHex = results[0].key_val; 
-          let ivHex = results[0].iv_val; 
-          let akey = Buffer.from(keyHex, 'hex');
-          let aiv = Buffer.from(ivHex, 'hex');
-          const decipher = crypto.createDecipheriv(algorithm, akey,aiv);
+          let keyHex = results[0].key_val;
+          let ivHex = results[0].iv_val;
+          let akey = Buffer.from(keyHex, "hex");
+          let aiv = Buffer.from(ivHex, "hex");
+          const decipher = crypto.createDecipheriv(algorithm, akey, aiv);
           let decrypted = decipher.update(k, "hex", "utf8");
           decrypted += decipher.final("utf8");
           if (decrypted == password) {
