@@ -1,10 +1,12 @@
 const mysql = require("mysql");
 const express = require("express");
+const fs=require("fs");
 const app = express();
 const bodyparser = require("body-parser");
 const encoder = bodyparser.urlencoded({ extended: false });
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
+const path=require("path");
 
 app.use("/public", express.static("public"));
 app.use(bodyparser.json());
@@ -34,8 +36,23 @@ let transporter = nodemailer.createTransport({
 
 //open registration page when user browse at /register endpoint
 app.get("/register", (req, res) => {
-  let message = req.query.message;
-  res.sendFile(__dirname + "/public/registration.html", { message: message });
+  const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const numbers='0123456789'
+    let username = '';
+    for (let i = 0; i < 5; i++) {
+        username += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    for(let i=0;i<3;i++){
+        username +=numbers.charAt(Math.floor(Math.random()*numbers.length))
+    }
+    fs.readFile(path.join(__dirname,"/public/registration.html"),'utf8',(err,data)=>{
+      if(err){
+        res.status(500).send("internal server error");
+        return;
+      }
+      const modifiedHTML=data.replace("{{name}}",username);
+      res.status(200).send(modifiedHTML);
+    })
 });
 //sending js file along with html file of registration page
 app.get("/registration.js", (req, res) => {

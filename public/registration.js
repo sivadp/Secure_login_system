@@ -1,4 +1,4 @@
-function generateUsername() {
+/*function generateUsername() {
     const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const numbers='0123456789'
     let username = '';
@@ -9,7 +9,7 @@ function generateUsername() {
         username +=numbers.charAt(Math.floor(Math.random()*numbers.length))
     }
     document.getElementById('username').value=username;
-}
+}*/
 function showPassword() {
     let password = document.getElementById("password");
     if (password.type === "password") {
@@ -21,4 +21,8 @@ function showPassword() {
 const message = new URLSearchParams(window.location.search).get('message');
 if(message){
    alert(message);
+}
+const username= new URLSearchParams(window.location.search).get('username');
+if(username){
+    document.getElementById('username').value=username;
 }

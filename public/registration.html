@@ -8,14 +8,14 @@
     <link rel="stylesheet"href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
     <link rel="stylesheet"href="./public/registration.css"type='text/css'>
 </head>
-<body onload="generateUsername()">
+<body>
     <div class="register">
         <h1>Register</h1>
         <form action="/register"method="POST">
             <label for="username">
                 <i class="fas fa-user"></i>
             </label>
-            <input type="text"name="username" id="username">
+            <input type="text"name="username" id="username"value="{{name}}">
             <label for="email">
                 <i class="fas fa-envelope"></i>
             </label>
